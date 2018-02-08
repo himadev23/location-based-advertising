@@ -1,18 +1,19 @@
 // Initialize Firebase
 var config = {
-    apiKey: "AIzaSyDzJqDInGFMAPpq0c4kBsDDr4CLCKdpyM8",
-    authDomain: "coupon-project-1517945338567.firebaseapp.com",
-    databaseURL: "https://coupon-project-1517945338567.firebaseio.com",
-    projectId: "coupon-project-1517945338567",
-    storageBucket: "",
-    messagingSenderId: "6770785770"
-};
+    apiKey: "AIzaSyDHzokAbTKu_FgIzLsU8QZm893E2YfUvUw",
+    authDomain: "location-based-advertiser.firebaseapp.com",
+    databaseURL: "https://location-based-advertiser.firebaseio.com",
+    projectId: "location-based-advertiser",
+    storageBucket: "location-based-advertiser.appspot.com",
+    messagingSenderId: "932682812705"
+  };
 firebase.initializeApp(config);
 
 // var databse=firebase.databse();
 
 
 var provider = new firebase.auth.GoogleAuthProvider();
+var database = firebase.database();
 
 function googleSignin() {
     firebase.auth()
@@ -21,18 +22,29 @@ function googleSignin() {
             var token = result.credential.accessToken;
             var user = result.user;
 
-            console.log(token)
-            console.log(user)
+            var uid = user.uid;
+            database.ref('users').set({
+              uid: {
+                token: token,
+                user: {
+                  name: result.user.displayName,
+                  email: result.user.email,
+                  emailVerified: result.user.emailVerified,
+                  photoURL: result.user.photoURL,
+                  metadata: result.user.metadata
+                }
+              }
+            });
+
+            
         }).catch(function(error) {
             var errorCode = error.code;
             var errorMessage = error.message;
 
-            console.log(error.code)
-            console.log(error.message)
+            
         });
         
-$('#google-signout').empty();
-$('#google-signout').html('<li><button id= "logout" onclick="googleSignout()">GoogleSignOut</button></li><li>Welcomme to'+ + '</li>');
+
 
 }
 
