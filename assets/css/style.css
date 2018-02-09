@@ -11,3 +11,30 @@
 	margin-right: 10px;
 	padding-top: 10px;
 }
+#google-signout, #google-signout li {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+#search-coupon-input {
+	width: 90%;
+}
+.search-area {
+	width: 100%;
+}
+.form-inline {
+	margin-bottom: 10px;
+}
+#auto-complete {
+	margin: 5px 5px 0 0;
+}
+header {
+	margin-top: 20px;
+	background: #efefef;
+	padding: 10px;
+}
+.signin-btn {
+	border: none;
+	padding: 0;
+	background: none;
+}
