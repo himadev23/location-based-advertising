@@ -1,13 +1,13 @@
 // Initialize Firebase
 var config = {
-    apiKey: "AIzaSyDHzokAbTKu_FgIzLsU8QZm893E2YfUvUw",
-    authDomain: "location-based-advertiser.firebaseapp.com",
-    databaseURL: "https://location-based-advertiser.firebaseio.com",
-    projectId: "location-based-advertiser",
-    storageBucket: "location-based-advertiser.appspot.com",
-    messagingSenderId: "932682812705"
-  };
-firebase.initializeApp(config);
+   apiKey: "AIzaSyDzJqDInGFMAPpq0c4kBsDDr4CLCKdpyM8",
+   authDomain: "coupon-project-1517945338567.firebaseapp.com",
+   databaseURL: "https://coupon-project-1517945338567.firebaseio.com",
+   projectId: "coupon-project-1517945338567",
+   storageBucket: "coupon-project-1517945338567.appspot.com",
+   messagingSenderId: "6770785770"
+ };
+ rebase.initializeApp(config);
 
 // var databse=firebase.databse();
 
