@@ -202,7 +202,6 @@ $(document).ready(function(){
 
       setTimeout(function(){
         recognition.stop();
-        console.log("aaa");
       },10000);
 
       var speachButton = $('<button type="button">').html('Speak');
@@ -218,9 +217,8 @@ $(document).ready(function(){
         console.log("speach started");
       }
 
-      var final_transcript = '';
-
       recognition.onresult = function(event) {
+        var final_transcript = '';
         var interim_transcript = '';
 
         for (var i = event.resultIndex; i < event.results.length; ++i) {
