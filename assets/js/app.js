@@ -191,3 +191,53 @@ function createMarker(deal) {
     console.log(marker);
     return marker
 }
+
+$(document).ready(function(){
+    if (!('webkitSpeechRecognition' in window)) {
+        return;
+    } else {
+      var recognition = new webkitSpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+
+      setTimeout(function(){
+        recognition.stop();
+        console.log("aaa");
+      },10000);
+
+      var speachButton = $('<button type="button">').html('Speak');
+      $('#search-button').after(speachButton);
+
+      $(speachButton).on('click', function(){
+        final_transcript = '';
+        recognition.lang = 'en';
+        recognition.start();
+      })
+
+      recognition.onstart = function(){
+        console.log("speach started");
+      }
+
+      var final_transcript = '';
+
+      recognition.onresult = function(event) {
+        var interim_transcript = '';
+
+        for (var i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            final_transcript += event.results[i][0].transcript;
+          } else {
+            interim_transcript += event.results[i][0].transcript;
+          }
+        }
+
+        $('#search-coupon-input').val(final_transcript);
+      }
+      recognition.onerror = function(event) {
+        console.log("speach threw error", event);
+      }
+      recognition.onend = function() {
+        console.log("speach ended");
+      }
+  }
+});
