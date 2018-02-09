@@ -204,12 +204,12 @@ $(document).ready(function(){
         recognition.stop();
       },10000);
 
-      var clickedSpeachBtn = false;
-      var speachButton = $('<button type="button" class="btn btn-primary">').html('Speak');
-      $('#search-button').after(speachButton);
+      var clickedspeechBtn = false;
+      var speechButton = $('<button type="button" class="btn btn-primary">').html('Speak');
+      $('#search-button').after(speechButton);
 
-      $(speachButton).on('click', function(){
-        if(clickedSpeachBtn) {
+      $(speechButton).on('click', function(){
+        if(clickedspeechBtn) {
             return;
         }
 
@@ -219,7 +219,8 @@ $(document).ready(function(){
       })
 
       recognition.onstart = function(){
-        clickedSpeachBtn = true;
+        clickedspeechBtn = true;
+        $(speechButton).hide();
       }
 
       recognition.onresult = function(event) {
@@ -231,10 +232,12 @@ $(document).ready(function(){
         }
       }
       recognition.onerror = function(event) {
-        clickedSpeachBtn = false;
+        clickedspeechBtn = false;
+        $(speechButton).show();
       }
       recognition.onend = function() {
-        clickedSpeachBtn = false;
+        clickedspeechBtn = false;
+        $(speechButton).show();
       }
   }
 });
