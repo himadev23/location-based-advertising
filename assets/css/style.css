@@ -6,3 +6,8 @@
 .deal {
 	border-bottom: 1px solid #cccccc;
 }
+#google-signout li div {
+	float: left;
+	margin-right: 10px;
+	padding-top: 10px;
+}
