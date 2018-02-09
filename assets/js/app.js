@@ -94,47 +94,70 @@ function findCoupons(lng, lat, query) {
         }
 
     }).then(function(response) {
-        console.log(response);
+        console.log("=========================",response);
         $('#coupons-data').empty();
         for (var i = 0; i < markers.length; i++) {
             markers[i].setMap(null);
         }
         markers = [];
         var bounds = new google.maps.LatLngBounds();
-        for (var i = 0; i < response.deals.length; i++) {
-            var deal = response.deals[i].deal;
-            var show_on_map = $('<a href="javascript:void(0);">').html('show on map');
-            var div = $('<div>').addClass('deal');
-            div.append(`<h2><a href="${deal.untracked_url}" target="_blank">${deal.title}</a></h2>`);
-            div.append(`<img src="${deal.image_url}">`);
-            div.append(`
-      	<ul style="float:left">
-      		<li>
-      			<h4><strong>Price:</strong><strike> $${deal.price + deal.discount_amount} </strike>$${deal.price}</h4>
-      		</li>
-      		<li>
-      			<h4><strong>Discount Percentage:</strong> ${deal.discount_percentage*100}</h4>
-      		</li>
-      		<li>
-      			<h4><strong>Expiration:</strong> ${moment(deal.expires_at).format("dddd, MMMM Do YYYY, h:mm:ss a")}</h4>
-      		</li>
-    		</ul>`)
+        // response = ''
+        if (response.query.total > 0){
+            for (var i = 0; i < response.deals.length; i++) {
+                var deal = response.deals[i].deal;
+                var div = $('<div>').addClass('deal');
+                div.append(`<h2><a href="${deal.untracked_url}" target="_blank">${deal.title}</a></h2>`);
+                div.append(`<img src="${deal.image_url}">`);
+                div.append(`
+              	<ul style="float:left">
+              		<li>
+              			<h4><strong>Price:</strong><strike> $${deal.price + deal.discount_amount} </strike>$${deal.price}</h4>
+              		</li>
+              		<li>
+              			<h4><strong>Discount Percentage:</strong> ${deal.discount_percentage*100}</h4>
+              		</li>
+              		<li>
+              			<h4><strong>Expiration:</strong> ${moment(deal.expires_at).format("dddd, MMMM Do YYYY, h:mm:ss a")}</h4>
+              		</li>
+        		</ul>`)
 
-            div.append('<h6></h6>');
-            div.append('<div style="float:none;clear:both;">');
-            $('#coupons-data').append(div);
+                div.append('<h6></h6>');
+                div.append('<div style="float:none;clear:both;">');
+                $('#coupons-data').append(div);
 
-            var marker = createMarker(deal);
-            markers.push(marker);
-            var loc = new google.maps.LatLng(marker.position.lat(), marker.position.lng());
-            bounds.extend(loc);
+                var marker = createMarker(deal);
+                markers.push(marker);
+                var loc = new google.maps.LatLng(marker.position.lat(), marker.position.lng());
+                bounds.extend(loc);
+            }
+            map.fitBounds(bounds)
+        }else {
+            console.log("in else")
+            var daModal = `<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+                              <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title">Modal title</h4>
+                                  </div>
+                                  <div class="modal-body">
+                                    <p>One fine body&hellip;</p>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                  </div>
+                                </div><!-- /.modal-content -->
+                              </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->`
+            $('#coupons-data').append(daModal);
+            $("#myModal").modal()
         }
-        map.fitBounds(bounds);
-    })
-}
 
-$('#search-coupon-input').on('input', function() {
-    var query = $(this).val();
+    })
+
+$('#search-button').on('click', function() {
+    var query = $("#search-coupon-input").val();
     findCoupons(lng, lat, query);
 })
 
