@@ -64,7 +64,7 @@ function googleSignOut() {
   
    .then(function() {
       $.cookie('user', '');
-      window.location.reload();
+      checkSession();
    }, function(error) {
       console.log('Signout Failed')  
    });
@@ -73,6 +73,8 @@ function googleSignOut() {
 function checkSession () {
     var cookieUser = $.cookie('user');
     if(!cookieUser) {
+      $('#login-wrapper').show();
+      $('#user-info').hide();
       return;
     }
 
