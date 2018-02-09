@@ -200,10 +200,6 @@ $(document).ready(function(){
       recognition.continuous = true;
       recognition.interimResults = true;
 
-      setTimeout(function(){
-        recognition.stop();
-      },10000);
-
       var clickedspeechBtn = false;
       var speechButton = $('<button type="button" class="btn btn-primary">').html('Speak');
       $('#search-button').after(speechButton);
@@ -212,6 +208,10 @@ $(document).ready(function(){
         if(clickedspeechBtn) {
             return;
         }
+
+        setTimeout(function(){
+          recognition.stop();
+        },10000);
 
         final_transcript = '';
         recognition.lang = 'en';
