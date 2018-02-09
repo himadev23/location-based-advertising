@@ -7,7 +7,7 @@ var config = {
    storageBucket: "coupon-project-1517945338567.appspot.com",
    messagingSenderId: "6770785770"
  };
- rebase.initializeApp(config);
+ firebase.initializeApp(config);
 
 // var databse=firebase.databse();
 
