@@ -204,17 +204,22 @@ $(document).ready(function(){
         recognition.stop();
       },10000);
 
-      var speachButton = $('<button type="button">').html('Speak');
+      var clickedSpeachBtn = false;
+      var speachButton = $('<button type="button" class="btn btn-primary">').html('Speak');
       $('#search-button').after(speachButton);
 
       $(speachButton).on('click', function(){
+        if(clickedSpeachBtn) {
+            return;
+        }
+
         final_transcript = '';
         recognition.lang = 'en';
         recognition.start();
       })
 
       recognition.onstart = function(){
-        console.log("speach started");
+        clickedSpeachBtn = true;
       }
 
       recognition.onresult = function(event) {
@@ -226,10 +231,10 @@ $(document).ready(function(){
         }
       }
       recognition.onerror = function(event) {
-        console.log("speach threw error", event);
+        clickedSpeachBtn = false;
       }
       recognition.onend = function() {
-        console.log("speach ended");
+        clickedSpeachBtn = false;
       }
   }
 });
