@@ -155,6 +155,7 @@ function findCoupons(lng, lat, query) {
         }
 
     })
+}
 
 $('#search-button').on('click', function() {
     var query = $("#search-coupon-input").val();
@@ -176,7 +177,7 @@ function createMarker(deal) {
     var marker = new google.maps.Marker({
         position: latLng,
         map: map,
-    })
+    });
 
 
     marker.addListener('click', function() {
