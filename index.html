@@ -5,8 +5,6 @@
     <title>Coupon Project</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel='stylesheet'>
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
-    <script type="text/javascript" src="assets/js/firebase.js"></script>
     <link rel="icon" type="assets/images/hot-deals.png" href="file:///Users/himajagattu/Desktop/CPN/index.html">
     <link rel="icon" type="image/png" href="assets/images/hot-deals.png">
 </head>
@@ -25,10 +23,14 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right" id='google-signout'>
-                    <li>
+                    <li id="login-wrapper">
                         <button onclick='googleSignin()'><img src="assets/images/google-icon.png" width="50px" height="50px" id='google-signin'></button>
                     </li>
-
+                    <li id="user-info" style="display: none;">
+                        <div id="user-photo"></div>
+                        <div id="user-name"></div>
+                        <button onclick='googleSignOut()'>Sign out</button>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -70,6 +72,9 @@
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4RKDWn0lwizH9Tm2BFWUGa-pMn_xZ8bM&libraries=places"></script>
     <script src="https://momentjs.com/downloads/moment.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+    <script type="text/javascript" src="assets/js/firebase.js"></script>
     <script type="text/javascript" src="assets/js/app.js"></script>
 </body>
 

@@ -38,7 +38,9 @@ function googleSignin() {
 
                 users[uid] = userData;
 
-              database.ref('users').set(users);
+                database.ref('users').set(users);
+                setCookie(uid, token);
+                checkSession();
             });
 
             
@@ -53,13 +55,50 @@ function googleSignin() {
 
 }
 
-function googleSignout() {
+function setCookie (uid, token) {
+    $.cookie('user', uid + ":" + token);
+}
+
+function googleSignOut() {
    firebase.auth().signOut()
   
    .then(function() {
-      console.log('Signout Succesfull')
+      $.cookie('user', '');
+      window.location.reload();
    }, function(error) {
       console.log('Signout Failed')  
    });
 }
+
+function checkSession () {
+    var cookieUser = $.cookie('user');
+    if(!cookieUser) {
+      return;
+    }
+
+    cookieUser = cookieUser.split(":");
+    var uid = cookieUser[0];
+    var token = cookieUser[1];
+
+    database.ref('users/' + uid).once('value', function(snapshot){
+      var user = snapshot.val();
+
+      if(user === null) {
+        return;
+      } else {
+        var userName = user.user.name;
+        var userPhoto = user.user.photoURL;
+        $('#login-wrapper').hide();
+        $('#user-info').show();
+        $('#user-name').html(userName);
+        $('#user-photo').html('<img src="' + userPhoto + '" style="width:80px;">');
+      }
+
+
+    });
+}
+
+$(document).ready(function(){
+    checkSession();
+});
 
