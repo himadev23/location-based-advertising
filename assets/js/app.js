@@ -224,12 +224,13 @@ $(document).ready(function(){
         for (var i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
             final_transcript += event.results[i][0].transcript;
+            break;
           } else {
             interim_transcript += event.results[i][0].transcript;
           }
         }
 
-        $('#search-coupon-input').val(final_transcript);
+        $('#search-coupon-input').val(interim_transcript);
       }
       recognition.onerror = function(event) {
         console.log("speach threw error", event);
