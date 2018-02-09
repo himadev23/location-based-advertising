@@ -23,17 +23,22 @@ function googleSignin() {
             var user = result.user;
 
             var uid = user.uid;
-            database.ref('users').set({
-              uid: {
-                token: token,
-                user: {
-                  name: result.user.displayName,
-                  email: result.user.email,
-                  emailVerified: result.user.emailVerified,
-                  photoURL: result.user.photoURL,
-                  metadata: result.user.metadata
-                }
-              }
+            database.ref('users').once('value', function(snapshot){
+              var users = snapshot.val() || {};
+              var userData = {
+                  token: token,
+                  user: {
+                    name: result.user.displayName,
+                    email: result.user.email,
+                    emailVerified: result.user.emailVerified,
+                    photoURL: result.user.photoURL,
+                    metadata: result.user.metadata
+                  }
+                };
+
+                users[uid] = userData;
+
+              database.ref('users').set(users);
             });
 
             
