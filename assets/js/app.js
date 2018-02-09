@@ -132,7 +132,7 @@ function findCoupons(lng, lat, query) {
             }
             map.fitBounds(bounds)
         }else {
-            console.log("in else")
+            /*console.log("in else")
             var daModal = `<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
                               <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -151,7 +151,7 @@ function findCoupons(lng, lat, query) {
                               </div><!-- /.modal-dialog -->
                             </div><!-- /.modal -->`
             $('#coupons-data').append(daModal);
-            $("#myModal").modal()
+            $("#myModal").modal()*/
         }
 
     })
