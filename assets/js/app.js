@@ -201,6 +201,7 @@ $(document).ready(function(){
       recognition.interimResults = true;
 
       var final_transcript = '';
+      var timer = 10;
 
       var clickedspeechBtn = false;
       var speechButton = $('<button type="button" class="btn btn-primary">').html('Speak');
@@ -212,8 +213,12 @@ $(document).ready(function(){
         }
 
         setTimeout(function(){
+          timer--;
+        }, 1000);
+
+        setTimeout(function(){
           recognition.stop();
-        },10000);
+        },timer * 1000);
 
         final_transcript = '';
         recognition.lang = 'en';
@@ -222,7 +227,7 @@ $(document).ready(function(){
 
       recognition.onstart = function(){
         clickedspeechBtn = true;
-        $(speechButton).hide();
+        $(speechButton).html(timer);
       }
 
       recognition.onresult = function(event) {
@@ -238,12 +243,14 @@ $(document).ready(function(){
       recognition.onerror = function(event) {
         clickedspeechBtn = false;
         final_transcript = '';
-        $(speechButton).show();
+        timer = 10;
+        $(speechButton).html('speak');
       }
       recognition.onend = function() {
         clickedspeechBtn = false;
         final_transcript = '';
-        $(speechButton).show();
+        timer = 10;
+        $(speechButton).html('speak');
       }
   }
 });
