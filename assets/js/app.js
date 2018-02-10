@@ -200,6 +200,8 @@ $(document).ready(function(){
       recognition.continuous = true;
       recognition.interimResults = true;
 
+      var final_transcript = '';
+
       var clickedspeechBtn = false;
       var speechButton = $('<button type="button" class="btn btn-primary">').html('Speak');
       $('#search-button').after(speechButton);
@@ -226,17 +228,21 @@ $(document).ready(function(){
       recognition.onresult = function(event) {
         for (var i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
-            $('#search-coupon-input').val(event.results[i][0].transcript);
+            final_transcript += event.results[i][0].transcript;
             break;
           }
         }
+
+        $('#search-coupon-input').val(final_transcript);
       }
       recognition.onerror = function(event) {
         clickedspeechBtn = false;
+        final_transcript = '';
         $(speechButton).show();
       }
       recognition.onend = function() {
         clickedspeechBtn = false;
+        final_transcript = '';
         $(speechButton).show();
       }
   }
