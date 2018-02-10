@@ -217,7 +217,7 @@ $(document).ready(function(){
 
         clearInterval(intervalHandler);
         intervalHandler = setInterval(function(){
-          $(speechButton).html(timer + 'speak');
+          $(speechButton).html(timer + ' left');
           timer--;
           if(timer < 0) {
             timer = SPEECH_TIME_LIMIT;
