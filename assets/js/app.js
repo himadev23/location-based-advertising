@@ -216,7 +216,7 @@ $(document).ready(function(){
             speechButton.html('speak');
             timer = SPEECH_TIME_LIMIT;
             clearInterval(intervalHandler);
-            $('#search-coupon-input').val(interim_transcript);
+            $('#search-coupon-input').val(final_transcript || interim_transcript);
             return;
         }
 
