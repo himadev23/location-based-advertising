@@ -212,6 +212,11 @@ $(document).ready(function(){
 
       $(speechButton).on('click', function(){
         if(clickedspeechBtn) {
+            recognition.stop();
+            speechButton.html('speak');
+            timer = SPEECH_TIME_LIMIT;
+            clearInterval(intervalHandler);
+            $('#search-coupon-input').val(final_transcript);
             return;
         }
 
