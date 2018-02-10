@@ -201,7 +201,10 @@ $(document).ready(function(){
       recognition.interimResults = true;
 
       var final_transcript = '';
-      var timer = 10;
+      const SPEECH_TIME_LIMIT = 10;
+      var timer = SPEECH_TIME_LIMIT;
+      var intervalHandler;
+
 
       var clickedspeechBtn = false;
       var speechButton = $('<button type="button" class="btn btn-primary">').html('Speak');
@@ -212,13 +215,16 @@ $(document).ready(function(){
             return;
         }
 
-        setTimeout(function(){
+        clearInterval(intervalHandler);
+        intervalHandler = setInterval(function(){
+          $(speechButton).html(timer + 'speak');
           timer--;
+          if(timer < 0) {
+            timer = SPEECH_TIME_LIMIT;
+            recognition.stop();
+            clearInterval(intervalHandler);
+          }
         }, 1000);
-
-        setTimeout(function(){
-          recognition.stop();
-        },timer * 1000);
 
         final_transcript = '';
         recognition.lang = 'en';
@@ -227,7 +233,6 @@ $(document).ready(function(){
 
       recognition.onstart = function(){
         clickedspeechBtn = true;
-        $(speechButton).html(timer);
       }
 
       recognition.onresult = function(event) {
@@ -243,13 +248,11 @@ $(document).ready(function(){
       recognition.onerror = function(event) {
         clickedspeechBtn = false;
         final_transcript = '';
-        timer = 10;
         $(speechButton).html('speak');
       }
       recognition.onend = function() {
         clickedspeechBtn = false;
         final_transcript = '';
-        timer = 10;
         $(speechButton).html('speak');
       }
   }
