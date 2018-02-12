@@ -5,6 +5,7 @@ var infowindow;
 
 var lng, lat;
 var markers = [];
+var currentLoc;
 
 function initialize() {
     var pyrmont = new google.maps.LatLng(-33.8665433, 151.1956316);
@@ -41,13 +42,14 @@ function initialize() {
 
 
 }
+
 initialize();
+
 
 function getUserLocation() {
     if (navigator.geolocation) {
 
-        navigator.geolocation.getCurrentPosition(function(response) {
-            //console.log(response);
+        navigator.geolocation.getCurrentPosition(function(response){ 
             var position = {
                 lng: response.coords.longitude,
                 lat: response.coords.latitude,
@@ -59,8 +61,9 @@ function getUserLocation() {
             var geoCoder = new google.maps.Geocoder();
             geoCoder.geocode({ 'latLng': map.getCenter() }, function(result, status) {
                 $('#auto-complete').val(result[0].formatted_address);
-                findCoupons(position.lng, position.lat);
-
+                console.log("============="+ result[0].formatted_address)
+                findCoupons(position.lng, position.lat);  
+                currentLoc = result[0].formatted_address;
             })
         });
 
@@ -68,18 +71,16 @@ function getUserLocation() {
         console.log("location not identified");
     }
 
-
 }
-
-
 getUserLocation();
+
+
 
 function findCoupons(lng, lat, query) {
     var url = 'https://api.sqoot.com/v2/deals';
     var api_key = "h7-Xq3wp2EUVjb4W-u80";
     var location = lat + "," + lng;
     var radius = 5;
-
     map.setZoom(15);
     $.ajax({
         url,
@@ -90,9 +91,7 @@ function findCoupons(lng, lat, query) {
             radius,
             per_page: 100,
             query
-
         }
-
     }).then(function(response) {
         console.log("=========================",response);
         $('#coupons-data').empty();
@@ -100,31 +99,36 @@ function findCoupons(lng, lat, query) {
             markers[i].setMap(null);
         }
         markers = [];
+        
         var bounds = new google.maps.LatLngBounds();
-        // response = ''
         if (response.query.total > 0){
             for (var i = 0; i < response.deals.length; i++) {
                 var deal = response.deals[i].deal;
+                
                 var div = $('<div>').addClass('deal');
                 div.append(`<h2><a href="${deal.untracked_url}" target="_blank">${deal.title}</a></h2>`);
                 div.append(`<img src="${deal.image_url}">`);
                 div.append(`
-              	<ul style="float:left">
-              		<li>
-              			<h4><strong>Price:</strong><strike> $${deal.price + deal.discount_amount} </strike>$${deal.price}</h4>
-              		</li>
-              		<li>
-              			<h4><strong>Discount Percentage:</strong> ${deal.discount_percentage*100}</h4>
-              		</li>
-              		<li>
-              			<h4><strong>Expiration:</strong> ${moment(deal.expires_at).format("dddd, MMMM Do YYYY, h:mm:ss a")}</h4>
-              		</li>
-        		</ul>`)
-
+                <ul style="float:left">
+                  <li>
+                    <h4><strong>Price:</strong><strike>$${deal.price + deal.discount_amount}</strike>$${deal.price}</h4>
+                  </li>
+                  <li>
+                    <h4><strong>Discount Percentage:</strong>${deal.discount_percentage*100}</h4>
+                  </li>
+                  <li>
+                    <h4><strong>Expiration:</strong> ${moment(deal.expires_at).format("dddd, MMMM Do YYYY, h:mm:ss a")}</h4>
+                  </li>
+                </ul>`)
                 div.append('<h6></h6>');
                 div.append('<div style="float:none;clear:both;">');
+                var reg = new RegExp("[ ]+","g");
+                var currentLocEncoded = currentLoc.replace(reg,"+")
+                var directionsUrl = "Directions.html?";
+                directionsUrl+= "origin=" + currentLocEncoded + "&destination_lat=" + deal.merchant.latitude + "&destination_lng=" + deal.merchant.longitude;
+                var GetDirection = $('<a href="' + directionsUrl + '">').html('Get Directions');
+                div.append(GetDirection);
                 $('#coupons-data').append(div);
-
                 var marker = createMarker(deal);
                 markers.push(marker);
                 var loc = new google.maps.LatLng(marker.position.lat(), marker.position.lng());
@@ -132,7 +136,7 @@ function findCoupons(lng, lat, query) {
             }
             map.fitBounds(bounds)
         }else {
-            /*console.log("in else")
+            console.log("in else")
             var daModal = `<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
                               <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -151,22 +155,22 @@ function findCoupons(lng, lat, query) {
                               </div><!-- /.modal-dialog -->
                             </div><!-- /.modal -->`
             $('#coupons-data').append(daModal);
-            $("#myModal").modal()*/
+            $("#myModal").modal()
         }
-
     })
 }
+
 
 $('#search-button').on('click', function() {
     var query = $("#search-coupon-input").val();
     findCoupons(lng, lat, query);
+    $("#map").hide(0)
 })
 
 
 var lastWindowOpened;
 
 function createMarker(deal) {
-    console.log(deal);
     var info = "<h4>" + deal.title + " " + deal.merchant.name + "<img src='" + deal.image_url + "' width='100px'>" + "</h4>"
     var infowindow = new google.maps.InfoWindow({
         content: info
@@ -188,7 +192,6 @@ function createMarker(deal) {
         lastWindowOpened = infowindow;
     });
 
-    console.log(marker);
     return marker
 }
 
@@ -268,3 +271,5 @@ $(document).ready(function(){
       }
   }
 });
+
+// }
