@@ -164,7 +164,6 @@ function findCoupons(lng, lat, query) {
 $('#search-button').on('click', function() {
     var query = $("#search-coupon-input").val();
     findCoupons(lng, lat, query);
-    $("#map").hide(0)
 })
 
 
